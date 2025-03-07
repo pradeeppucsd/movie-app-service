@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "35ce2ebf-3c3c-4124-a643-8769d3183e0a",
+		"name": "movie-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19434567"
+	},
+	"item": [
+		{
+			"name": "PopularMovies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/movies/popular?api_key=test_key",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"movies",
+						"popular"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "test_key"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchMovies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/movies/search?api_key=test_key&query=in",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"movies",
+						"search"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "test_key"
+						},
+						{
+							"key": "query",
+							"value": "in"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MovieDetailsByID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/movies/1?api_key=test_key",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"movies",
+						"1"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "test_key"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
