@@ -2,6 +2,7 @@ package com.movie.app.service;
 
 import com.movie.app.dto.MovieDetailDTO;
 import com.movie.app.dto.MovieSummaryDTO;
+import com.movie.app.dto.PaginatedResponse;
 import com.movie.app.entity.Movie;
 import com.movie.app.exception.MovieNotFoundException;
 import com.movie.app.repository.MovieRepository;
@@ -69,12 +70,12 @@ class MovieServiceTest {
 
     when(movieRepository.findAll(pageable)).thenReturn(moviePage);
 
-    Page<MovieSummaryDTO> movieSummaryDTOs = movieService.getPopularMovies(pageable);
+    PaginatedResponse<MovieSummaryDTO> movieSummaryDTOs = movieService.getPopularMovies(pageable);
 
     assertNotNull(movieSummaryDTOs);
-    assertEquals(2, movieSummaryDTOs.getContent().size());
-    assertEquals(movie1.getTitle(), movieSummaryDTOs.getContent().get(0).title());
-    assertEquals(movie2.getTitle(), movieSummaryDTOs.getContent().get(1).title());
+    assertEquals(2, movieSummaryDTOs.content().size());
+    assertEquals(movie1.getTitle(), movieSummaryDTOs.content().get(0).title());
+    assertEquals(movie2.getTitle(), movieSummaryDTOs.content().get(1).title());
   }
 
   @Test

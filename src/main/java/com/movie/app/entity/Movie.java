@@ -14,7 +14,6 @@ import lombok.Setter;
  * This class is mapped to the "movie" table in the database.
  * It contains the movie's details such as title, release date, genres, rating, etc.
  *
- * @see MovieRepository
  */
 @Entity
 @Table(name = "movie")

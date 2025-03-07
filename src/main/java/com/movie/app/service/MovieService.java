@@ -2,6 +2,7 @@ package com.movie.app.service;
 
 import com.movie.app.dto.MovieDetailDTO;
 import com.movie.app.dto.MovieSummaryDTO;
+import com.movie.app.dto.PaginatedResponse;
 import com.movie.app.entity.Movie;
 import com.movie.app.exception.MovieNotFoundException;
 import com.movie.app.repository.MovieRepository;
@@ -43,16 +44,29 @@ public class MovieService {
    * @param pageable the pagination information (page number and size)
    * @return a Page containing MovieSummaryDTO objects representing the popular movies
    */
-  public Page<MovieSummaryDTO> getPopularMovies(Pageable pageable) {
-    logger.info("Fetching popular movies with pagination: page={}, size={}", pageable.getPageNumber(), pageable.getPageSize());
-    return movieRepository.findAll(pageable)
-        .map(movie -> new MovieSummaryDTO(
+  public PaginatedResponse<MovieSummaryDTO> getPopularMovies(Pageable pageable) {
+    logger.info("Fetching popular movies with pagination: page={}, size={}",
+        pageable.getPageNumber(), pageable.getPageSize());
+
+    Page<Movie> moviePage = movieRepository.findAll(pageable);
+
+    // Return empty list for empty pages
+    if (moviePage.getContent().isEmpty()) {
+      logger.warn("No popular movies found for the requested page: page={}, size={}", pageable.getPageNumber(), pageable.getPageSize());
+    }
+
+    return new PaginatedResponse<>(
+        moviePage.getContent().stream().map(movie -> new MovieSummaryDTO(
             movie.getId(),
             movie.getTitle(),
             movie.getReleaseDate(),
             movie.getPosterUrl(),
             movie.getRating()
-        ));
+        )).toList(),
+        moviePage.getNumber(),
+        moviePage.getTotalPages(),
+        moviePage.getTotalElements()
+    );
   }
 
   /**

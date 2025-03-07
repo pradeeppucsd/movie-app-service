@@ -35,6 +35,12 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(apiKeyInterceptor)
-        .addPathPatterns("/**");
+        .addPathPatterns("/**")  // Intercept all requests
+        .excludePathPatterns(
+            "/swagger-ui/**",        // Exclude Swagger UI
+            "/v3/api-docs/**",       // Exclude OpenAPI JSON
+            "/swagger-resources/**", // Exclude Swagger resources
+            "/webjars/**"            // Exclude Swagger-related web assets
+        );
   }
 }
