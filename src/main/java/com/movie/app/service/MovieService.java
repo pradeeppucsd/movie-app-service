@@ -15,18 +15,34 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service class that handles business logic related to movies.
+ * Provides methods to fetch popular movies, search movies by title,
+ * and retrieve detailed information about a specific movie.
+ */
 @Service
 public class MovieService {
 
   private static final Logger logger = LoggerFactory.getLogger(MovieService.class);  // Logger instance
 
-  private MovieRepository movieRepository;
+  private final MovieRepository movieRepository;
 
+  /**
+   * Constructs a MovieService with the specified MovieRepository.
+   *
+   * @param movieRepository the repository responsible for accessing movie data
+   */
   @Autowired
   public MovieService(MovieRepository movieRepository) {
     this.movieRepository = movieRepository;
   }
 
+  /**
+   * Retrieves a paginated list of popular movies.
+   *
+   * @param pageable the pagination information (page number and size)
+   * @return a Page containing MovieSummaryDTO objects representing the popular movies
+   */
   public Page<MovieSummaryDTO> getPopularMovies(Pageable pageable) {
     logger.info("Fetching popular movies with pagination: page={}, size={}", pageable.getPageNumber(), pageable.getPageSize());
     return movieRepository.findAll(pageable)
@@ -39,6 +55,13 @@ public class MovieService {
         ));
   }
 
+  /**
+   * Searches for movies based on the provided query string.
+   *
+   * @param query the search query string to search movie titles
+   * @return a List of MovieSummaryDTO objects matching the search query
+   * @throws MovieNotFoundException if no movies are found matching the query
+   */
   public List<MovieSummaryDTO> searchMovies(String query) {
     logger.info("Searching for movies with query: {}", query);
     List<Movie> movies = movieRepository.findByTitleContainingIgnoreCase(query);
@@ -57,6 +80,13 @@ public class MovieService {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Retrieves the details of a specific movie by its ID.
+   *
+   * @param id the ID of the movie
+   * @return a MovieDetailDTO object containing detailed information of the movie
+   * @throws MovieNotFoundException if the movie with the given ID is not found
+   */
   public MovieDetailDTO getMovieById(Long id) {
     logger.info("Fetching movie details for movie ID: {}", id);
     Movie movie = movieRepository.findById(id)

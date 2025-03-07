@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller class that handles requests related to movies.
+ * Provides endpoints to fetch popular movies, search for movies,
+ * and get movie details by ID.
+ */
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
@@ -25,12 +30,25 @@ public class MovieController {
   private final MovieService movieService;
   private final MovieValidationService movieValidationService;
 
+  /**
+   * Constructs a MovieController with the specified MovieService and MovieValidationService.
+   *
+   * @param movieService the service responsible for handling movie data
+   * @param movieValidationService the service responsible for validating movie-related requests
+   */
   @Autowired
   public MovieController(MovieService movieService, MovieValidationService movieValidationService) {
     this.movieService = movieService;
     this.movieValidationService = movieValidationService;
   }
 
+  /**
+   * Retrieves a paginated list of popular movies based on their ratings.
+   *
+   * @param page the page number to retrieve (default is 0)
+   * @param size the number of movies per page (default is 50)
+   * @return a ResponseEntity containing a paginated list of MovieSummaryDTO objects
+   */
   @GetMapping("/popular")
   public ResponseEntity<Page<MovieSummaryDTO>> getPopularMovies(
       @RequestParam(defaultValue = "0") int page,
@@ -43,6 +61,12 @@ public class MovieController {
     return ResponseEntity.ok(movieService.getPopularMovies(pageable));
   }
 
+  /**
+   * Searches for movies based on the provided query string.
+   *
+   * @param query the search query string
+   * @return a ResponseEntity containing a list of MovieSummaryDTO objects matching the query
+   */
   @GetMapping("/search")
   public ResponseEntity<List<MovieSummaryDTO>> searchMovies(@RequestParam String query) {
     movieValidationService.validateSearchQuery(query);
@@ -51,6 +75,12 @@ public class MovieController {
     return ResponseEntity.ok(movieService.searchMovies(query));
   }
 
+  /**
+   * Retrieves the details of a specific movie by its ID.
+   *
+   * @param id the ID of the movie
+   * @return a ResponseEntity containing the MovieDetailDTO object for the specified movie
+   */
   @GetMapping("/{id}")
   public ResponseEntity<MovieDetailDTO> getMovieById(@PathVariable Long id) {
     movieValidationService.validateMovieId(id);
