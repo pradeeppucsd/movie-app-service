@@ -23,7 +23,7 @@ public class MovieController {
   private MovieService movieService;
 
   @GetMapping("/popular")
-  public ResponseEntity<Page<Movie>> getPopularMovies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+  public ResponseEntity<Page<Movie>> getPopularMovies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "50") int size) {
     Pageable pageable = PageRequest.of(page, size, Sort.by("rating").descending());
     return ResponseEntity.ok(movieService.getPopularMovies(pageable));
   }
