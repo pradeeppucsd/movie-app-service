@@ -1,5 +1,7 @@
 package com.movie.app.controller;
 
+import com.movie.app.dto.MovieDetailDTO;
+import com.movie.app.dto.MovieSummaryDTO;
 import com.movie.app.entity.Movie;
 import com.movie.app.service.MovieService;
 import java.util.List;
@@ -22,19 +24,25 @@ public class MovieController {
   @Autowired
   private MovieService movieService;
 
+  @Autowired
+  public MovieController(MovieService movieService) {
+    this.movieService = movieService;
+  }
+
   @GetMapping("/popular")
-  public ResponseEntity<Page<Movie>> getPopularMovies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "50") int size) {
+  public ResponseEntity<Page<MovieSummaryDTO>> getPopularMovies(@RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "50") int size) {
     Pageable pageable = PageRequest.of(page, size, Sort.by("rating").descending());
     return ResponseEntity.ok(movieService.getPopularMovies(pageable));
   }
 
   @GetMapping("/search")
-  public ResponseEntity<List<Movie>> searchMovies(@RequestParam String query) {
+  public ResponseEntity<List<MovieSummaryDTO>> searchMovies(@RequestParam String query) {
     return ResponseEntity.ok(movieService.searchMovies(query));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
+  public ResponseEntity<MovieDetailDTO> getMovieById(@PathVariable Long id) {
     return ResponseEntity.ok(movieService.getMovieById(id));
   }
 
