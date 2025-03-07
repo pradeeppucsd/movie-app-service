@@ -20,8 +20,12 @@ public class MovieService {
 
   private static final Logger logger = LoggerFactory.getLogger(MovieService.class);  // Logger instance
 
-  @Autowired
   private MovieRepository movieRepository;
+
+  @Autowired
+  public MovieService(MovieRepository movieRepository) {
+    this.movieRepository = movieRepository;
+  }
 
   public Page<MovieSummaryDTO> getPopularMovies(Pageable pageable) {
     logger.info("Fetching popular movies with pagination: page={}, size={}", pageable.getPageNumber(), pageable.getPageSize());
