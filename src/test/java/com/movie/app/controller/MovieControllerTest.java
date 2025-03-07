@@ -17,7 +17,19 @@ public class MovieControllerTest {
 
   @Test
   public void testGetPopularMovies() throws Exception {
-    mockMvc.perform(get("/movies/popular"))
+    mockMvc.perform(get("/movies/popular?api_key=test_key"))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  public void testGetPopularMoviesWhenisUnauthorized() throws Exception {
+    mockMvc.perform(get("/movies/popular?api_key=xzq"))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void testGetPopularMoviesWhenApiKeyIsMissing() throws Exception {
+    mockMvc.perform(get("/movies/popular"))
+        .andExpect(status().isUnauthorized());
   }
 }
