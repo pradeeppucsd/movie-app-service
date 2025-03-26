@@ -77,6 +77,8 @@ V1__init.sql, V2__add_movies_table.sql, etc.
 mvn clean install
 mvn spring-boot:run
 ```
+## H2 database console:
+http://localhost:8080/h2-console
 
 ## API documentation: 
 * Swagger API docs
