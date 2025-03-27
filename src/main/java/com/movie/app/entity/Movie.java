@@ -68,4 +68,9 @@ public class Movie {
    * The language in which the movie is presented.
    */
   private String language;
+
+  /**
+   * popularity of the movie
+   */
+  private Integer popularity;
 }

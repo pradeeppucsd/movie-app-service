@@ -11,11 +11,13 @@ import java.time.LocalDate;
  * @param releaseDate The release date of the movie.
  * @param posterUrl The URL of the movie's poster image.
  * @param averageRating The average rating of the movie.
+ * @param popularity The popularity of movie number
  */
 public record MovieSummaryDTO(
     Long movieId,
     String title,
     LocalDate releaseDate,
     String posterUrl,
-    Double averageRating) {
+    Double averageRating,
+    Integer popularity) {
 }

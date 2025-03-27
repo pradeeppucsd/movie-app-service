@@ -61,7 +61,8 @@ public class MovieService {
             movie.getTitle(),
             movie.getReleaseDate(),
             movie.getPosterUrl(),
-            movie.getRating()
+            movie.getRating(),
+            movie.getPopularity()
         )).toList(),
         moviePage.getNumber(),
         moviePage.getTotalPages(),
@@ -89,7 +90,8 @@ public class MovieService {
             movie.getTitle(),
             movie.getReleaseDate(),
             movie.getPosterUrl(),
-            movie.getRating()
+            movie.getRating(),
+            movie.getPopularity()
         ))
         .collect(Collectors.toList());
   }

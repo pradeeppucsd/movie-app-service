@@ -68,7 +68,7 @@ public class MovieController {
     movieValidationService.validatePageAndSize(page, size);
 
     logger.info("Received request to fetch popular movies with page={} and size={}", page, size);
-    Pageable pageable = PageRequest.of(page, size, Sort.by("rating").descending());
+    Pageable pageable = PageRequest.of(page, size, Sort.by("popularity").descending());
     return ResponseEntity.ok(movieService.getPopularMovies(pageable));
   }
 

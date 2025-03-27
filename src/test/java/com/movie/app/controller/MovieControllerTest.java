@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.movie.app.dto.MovieDetailDTO;
 import com.movie.app.dto.MovieSummaryDTO;
+import com.movie.app.entity.Movie;
+import com.movie.app.repository.MovieRepository;
 import com.movie.app.service.MovieService;
 import com.movie.app.service.MovieValidationService;
 import java.time.LocalDate;
@@ -35,6 +37,8 @@ public class MovieControllerTest {
 
   @InjectMocks
   private MovieController movieController;
+  @Mock
+  private MovieRepository movieRepository;
 
   // Test for /movies/popular endpoint
   @Test
@@ -119,17 +123,24 @@ public class MovieControllerTest {
   @Test
   public void testSearchMoviesContentValidation() throws Exception {
     String query = "Inception";
-    MovieSummaryDTO movieDetailDTO = new MovieSummaryDTO(1L, "Inception", LocalDate.of(2010, 7, 16), "inception.jpg", 8.8);
+    final MovieSummaryDTO movieDetailDTO = new MovieSummaryDTO(5L, "Inception1", LocalDate.of(2010, 7, 16), "inception.jpg", 8.8,7);
+    final Movie movie = new Movie();
+    movie.setTitle("Inception");
+    movie.setOverview("A mind-bending thriller");
+    movie.setRating(8.8);
+    movie.setReleaseDate(LocalDate.of(2010, 7, 16));
+    movie.setPopularity(7);
+    movie.setPosterUrl("inception.jpg");
 
     // Mock the searchMovies method
-    when(movieService.searchMovies(query)).thenReturn(List.of(movieDetailDTO));
+    when(movieRepository.findByTitleContainingIgnoreCase(query)).thenReturn(List.of(movie));
+    //when(movieService.searchMovies(query)).thenReturn(List.of(movieDetailDTO));
 
     // Perform the GET request for /movies/search?query=Inception&api_key=
     mockMvc.perform(get("/movies/search?query=" + query + "&api_key=" + TEST_API_KEY))
         .andExpect(status().isOk())  // Expect HTTP 200 OK
         .andExpect(jsonPath("$[0].title").value("Inception"))
         .andExpect(jsonPath("$[0].posterUrl").value("inception.jpg"))
-        .andExpect(jsonPath("$[0].averageRating").value(8.8)
-        );
+        .andExpect(jsonPath("$[0].averageRating").value(8.8));
   }
 }
